@@ -1,0 +1,20 @@
+name: Lint & Format Code
+
+on:
+  pull_request:
+
+jobs:
+  lint-n-format:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: .python-version
+      - name: Install Poetry
+        run: curl -sSL https://install.python-poetry.org | python3 -
+      - name: Setup
+        run: make setup
+      - name: Lint
+        run: make lint
