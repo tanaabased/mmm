@@ -20,7 +20,7 @@ test:
 
 # Run Ruff without fixing (to check status)
 check:
-	ruff check .
+	poetry run ruff check .
 
 # Install pre-commit hook
 precommit:
