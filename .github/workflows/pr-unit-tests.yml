@@ -27,11 +27,9 @@ jobs:
         run: bun install --frozen-lockfile --ignore-scripts
       - name: Run unit tests
         run: bun run test:unit
+      - name: Run research proofs under Bun and Node
+        run: bun run test:research
       - name: Build Node commands
         run: bun run build
-      - name: Check Node command artifacts
-        run: |
-          node dist/mmm.js --version
-          node dist/mmm-server.js --help
-          node dist/mmm-tui.js --help
-          npm pack --dry-run --ignore-scripts
+      - name: Check installed Node command
+        run: bun run test:package

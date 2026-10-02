@@ -1,7 +1,6 @@
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 
-import { configSchema, localBoundary } from "./config.mts";
-import type { StrategyConfig } from "./config.mts";
+import { configSchema, localBoundary, type StrategyConfig } from './config.mts';
 
 export type CalendarDay = {
   id: string;
@@ -11,10 +10,9 @@ export type CalendarDay = {
 };
 
 export function instant(value: string): number {
-  if (!/(Z|[+-]\d{2}:\d{2})$/.test(value))
-    throw new Error("Instant requires an explicit offset");
+  if (!/(Z|[+-]\d{2}:\d{2})$/.test(value)) throw new Error('Instant requires an explicit offset');
   const parsed = DateTime.fromISO(value, { setZone: true });
-  if (!parsed.isValid) throw new Error("Invalid instant");
+  if (!parsed.isValid) throw new Error('Invalid instant');
   return parsed.toMillis();
 }
 
@@ -31,36 +29,23 @@ export function sessionWindow(
     calendar.version !== config.session.calendarVersion ||
     calendar.tradingDate !== tradingDate
   )
-    return { status: "unavailable" as const };
+    return { status: 'unavailable' as const };
   const { session } = config;
-  const reset = localBoundary(
-    tradingDate,
-    session.timezone,
-    session.vwapReset,
-  ).toMillis();
-  const start = localBoundary(
-    tradingDate,
-    session.timezone,
-    session.window.start,
-  ).toMillis();
-  const end = localBoundary(
-    tradingDate,
-    session.timezone,
-    session.window.end,
-  ).toMillis();
+  const reset = localBoundary(tradingDate, session.timezone, session.vwapReset).toMillis();
+  const start = localBoundary(tradingDate, session.timezone, session.window.start).toMillis();
+  const end = localBoundary(tradingDate, session.timezone, session.window.end).toMillis();
   const intervals = calendar.intervals
     .map((value) => ({ start: instant(value.start), end: instant(value.end) }))
     .sort((a, b) => a.start - b.start);
   if (
     intervals.some(
       (value, index) =>
-        value.start >= value.end ||
-        (index > 0 && intervals[index - 1]!.end > value.start),
+        value.start >= value.end || (index > 0 && intervals[index - 1]!.end > value.start),
     )
   )
-    throw new Error("Invalid calendar intervals");
+    throw new Error('Invalid calendar intervals');
   if (end <= start || end - reset > 1440 * 60_000)
-    throw new Error("Session exceeds retained bar limit");
+    throw new Error('Session exceeds retained bar limit');
   const active = intervals
     .map((value) => ({
       start: Math.max(start, value.start),
@@ -68,7 +53,7 @@ export function sessionWindow(
     }))
     .filter((value) => value.start < value.end);
   return {
-    status: active.length ? ("open" as const) : ("closed" as const),
+    status: active.length ? ('open' as const) : ('closed' as const),
     tradingDate,
     reset,
     start,
@@ -84,11 +69,10 @@ export function containsBar(
   intervalSeconds = 60,
 ): boolean {
   if (!Number.isInteger(intervalSeconds) || intervalSeconds <= 0)
-    throw new Error("Invalid interval");
-  if (window.status !== "open") return false;
+    throw new Error('Invalid interval');
+  if (window.status !== 'open') return false;
   const value = instant(start);
   return window.intervals.some(
-    (interval) =>
-      value >= interval.start && value + intervalSeconds * 1000 <= interval.end,
+    (interval) => value >= interval.start && value + intervalSeconds * 1000 <= interval.end,
   );
 }

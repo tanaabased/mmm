@@ -19,7 +19,7 @@ export default defineConfig([
   ...tseslint.configs.recommended,
   prettierConfig,
   {
-    files: ['**/*.{js,mjs,ts,tsx}'],
+    files: ['**/*.{js,mjs,ts,mts,tsx}'],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',

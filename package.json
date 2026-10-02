@@ -13,9 +13,7 @@
     "node": ">=26 <27"
   },
   "bin": {
-    "mmm": "./dist/mmm.js",
-    "mmm-server": "./dist/mmm-server.js",
-    "mmm-tui": "./dist/mmm-tui.js"
+    "mmm": "./dist/mmm.js"
   },
   "files": [
     "dist/",
@@ -30,20 +28,28 @@
     "format:write": "bun run --bun prettier . --write --ignore-unknown",
     "lint": "bun run lint:eslint && bun run format:check",
     "typecheck": "bun run --bun tsc --noEmit",
-    "test:unit": "bun ./node_modules/mocha/bin/mocha.js 'test/**/*.spec.ts'",
-    "test": "bun run test:unit"
+    "test:unit": "bun --bun ./node_modules/mocha/bin/mocha.js 'test/*.spec.ts'",
+    "test:research": "bun scripts/check-research-task.ts",
+    "test:package": "bun scripts/check-package-task.ts",
+    "test": "bun run test:unit && bun run test:research"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/bun": "^1.4.2",
+    "@types/luxon": "3.7.1",
     "@types/mocha": "^10.0.10",
     "@types/node": "^26.6.3",
     "eslint": "^10.11.0",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.12.0",
-    "mocha": "^12.0.2",
+    "luxon": "3.7.2",
+    "mocha": "11.7.0",
     "prettier": "^3.9.9",
+    "simple-statistics": "7.12.1",
+    "trading-signals": "8.3.0",
     "typescript": "^6.0.0",
-    "typescript-eslint": "^8.71.0"
+    "typescript-eslint": "^8.71.0",
+    "yaml": "2.9.1",
+    "zod": "4.6.5"
   }
 }

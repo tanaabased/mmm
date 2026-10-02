@@ -17,5 +17,12 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true
   },
-  "include": ["bin/**/*.ts", "lib/**/*.ts", "scripts/**/*.ts", "test/**/*.ts"]
+  "include": [
+    "bin/**/*.ts",
+    "lib/**/*.ts",
+    "scripts/**/*.ts",
+    "test/**/*.ts",
+    "docs/decisions/analytics/lib/*.mts",
+    "docs/decisions/analytics/test/*.mts"
+  ]
 }

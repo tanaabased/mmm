@@ -25,8 +25,8 @@ They neither place orders nor establish that any proposed strategy is profitable
 
 ## Package evidence
 
-Exact evaluated distributions are frozen in the research
-[toolchain manifest](analytics/toolchain.json) and [lock](analytics/toolchain.bun.lock).
+Exact evaluated candidate distributions are pinned as root development dependencies
+in [package.json](../../package.json) and [bun.lock](../../bun.lock).
 Registry metadata was inspected on the decision date. The modification dates
 below are registry activity signals, not proof of maintenance quality or support.
 
@@ -223,10 +223,11 @@ futures questions only if that work is explicitly resumed.
 [#2](https://github.com/tanaabased/mmm/issues/2) still owns the single application
 package, supported Node runtime, repository checks, and source layout. Accordingly,
 all proof code, examples, and tests live under this decision's `analytics/` scope.
-There is no root package manifest, application export, build entrypoint, or new CI
-workflow. The toolchain files describe an isolated temporary research environment.
-After #2 lands, expose the research check through its chosen command conventions;
-promote schema/calculation modules only when a later runtime actually consumes them.
+The root package owns installation, lint, formatting, type checking, and the
+`test:research` command. Its Linux/macOS test workflow runs the proofs under Bun
+and the declared Node consumer runtime. There is no research package, application
+export, or build entrypoint. Promote schema/calculation modules only when a later
+runtime actually consumes them.
 Keep the proofs and their tests together if that ownership moves.
 
 ## Run and interpret the proofs
@@ -234,18 +235,18 @@ Keep the proofs and their tests together if that ownership moves.
 From the repository root, with Bun and Node on PATH:
 
 ```sh
-bun docs/decisions/analytics/scripts/check-cli.mjs
+bun install --frozen-lockfile
+bun run lint
+bun run typecheck
+bun run test:research
 ```
 
-The command creates its own temporary directory, copies the fixtures, performs a
-frozen Bun install with lifecycle scripts disabled, runs strict TypeScript checks,
-Mocha under both Bun and Node, and standalone Prettier checks, then removes only
-that temporary directory. Network access is needed for uncached dependencies;
-tests themselves need neither credentials nor network. The checked-in lock pins
-transitive tools as well as candidates. Run under #2's declared consumer runtime
-once it exists; current evidence is Bun 1.4.2 and Node 26.5.0, not a claim about an
-as-yet-unselected supported Node range. The command prints runtime timezone
-provenance. Repository ESLint/build/pack gates do not yet exist and are not claimed.
+The root frozen install supplies Mocha and the evaluated candidate packages.
+`test:research` runs all three proof files under Bun and Node 26 and prints Node
+runtime timezone provenance. Tests themselves need neither credentials nor network;
+uncached dependency installation may need network access. Root ESLint, standalone
+Prettier, and strict TypeScript checks cover the research alongside application
+source, without a second formatter policy or toolchain lock.
 
 The three test files map to the acceptance criteria: `analytics.spec.mts` covers
 hand calculations, streaming observations, candidate mismatches, correction

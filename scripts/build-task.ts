@@ -1,8 +1,8 @@
-import { chmod } from 'node:fs/promises';
+import { chmod, rm } from 'node:fs/promises';
 
-const entrypoints = ['mmm', 'mmm-server', 'mmm-tui'].map((name) => `bin/${name}.ts`);
+await rm('dist', { recursive: true, force: true });
 const result = await Bun.build({
-  entrypoints,
+  entrypoints: ['bin/mmm.ts'],
   outdir: 'dist',
   target: 'node',
   format: 'esm',
