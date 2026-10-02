@@ -3,6 +3,12 @@
 Decision date: 2026-09-29. Scope: [MMM #8](https://github.com/tanaabased/mmm/issues/8).
 Status: recommended foundation research contract; no trading runtime is implemented.
 
+Direction update, 2026-10-02: the first integration will use Alpaca equities,
+beginning with paper execution. Futures provider selection, access setup, and
+implementation are deferred until explicitly revisited. Keep the existing
+overnight/futures examples and rollover proofs as research reference; they do not
+commit the foundation or the first equities integration to shipping futures.
+
 ## Decision
 
 Own the small session calculations and correction policy. Use Luxon for timezone
@@ -186,9 +192,10 @@ roll; do not turn the customary date into an automatic execution instruction.
 
 ## Reconciliation with #7 and ownership with #2
 
-Reviewed [#7's current contract](https://github.com/tanaabased/mmm/issues/7) on the
-decision date. It has no completed provider recommendation yet. This research
-preserves its separation of market data, execution, and decisions:
+The provider recommendation in [PR #10](https://github.com/tanaabased/mmm/pull/10)
+selects Alpaca equities and optional Jev evaluation, with futures deferred by the
+2026-10-02 direction update. This research preserves its separation of market
+data, execution, and decisions:
 
 - Alpaca's [stock stream](https://docs.alpaca.markets/us/docs/real-time-stock-pricing-data)
   exposes late-trade updated bars and separate trade correction/cancel messages.
@@ -198,8 +205,9 @@ preserves its separation of market data, execution, and decisions:
   trade populations. Explicit feed identity must survive historical backfill and
   live replay. Never blend feeds or call IEX VWAP a consolidated-market VWAP.
 - Futures data/execution support, entitlements, authoritative calendars, contract
-  metadata, and live correction guarantees remain #7's named integration gates.
-  No unsupported provider is implied by a configurable futures example.
+  metadata, and live correction guarantees remain deferred research questions.
+  They do not block equities work. No unsupported provider is implied by a
+  configurable futures example.
 - Jev sees already computed features and bounded, source-grounded context.
   Arithmetic, ordering, session eligibility, missing-data gates, and execution
   limits remain code. Invalid/unavailable input or model failure means abstain.
@@ -208,9 +216,9 @@ preserves its separation of market data, execution, and decisions:
   availability remain #7's responsibility. Model confidence is not profit odds.
 
 The calculations can be recommended now because they do not depend on the final
-SDK choice. Before adapter implementation, reconcile these specific input fields
-and availability rules against #7's completed recommendation. Do not interpret
-this document as closing #7's provider questions.
+SDK choice. Before adapter implementation, validate these specific input fields
+and availability rules against the selected Alpaca SDK and feed. Revisit the
+futures questions only if that work is explicitly resumed.
 
 [#2](https://github.com/tanaabased/mmm/issues/2) still owns the single application
 package, supported Node runtime, repository checks, and source layout. Accordingly,
