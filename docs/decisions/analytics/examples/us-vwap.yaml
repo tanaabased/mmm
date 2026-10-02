@@ -1,0 +1,43 @@
+schemaVersion: 1
+id: us-vwap
+instrument:
+  assetClass: equity
+  symbol: SPY
+  tickSize: 0.01
+marketData:
+  provider: alpaca
+  feed: sip
+  intervalSeconds: 60
+  adjustment: raw
+  volumeUnit: shares
+  priceBasis: bar-vwap
+strategy:
+  type: vwap-mean-reversion
+  parameters:
+    entrySigma: 2
+    exitSigma: 0.5
+session:
+  name: us-morning
+  timezone: America/New_York
+  calendar: fixture-us
+  calendarVersion: 2026-09-29
+  tradingDate: calendar-label
+  window:
+    start:
+      time: 09:30
+      dayOffset: 0
+    end:
+      time: 11:30
+      dayOffset: 0
+  vwapReset:
+    time: 09:30
+    dayOffset: 0
+  dstPolicy: reject-ambiguous-or-nonexistent
+warmup:
+  minPositiveVolumeBars: 2
+  scope: since-reset
+dataPolicy:
+  missing: unavailable
+  corrections: replay-retained-session
+  duplicates: ignore-identical
+  maxSessionBars: 1440

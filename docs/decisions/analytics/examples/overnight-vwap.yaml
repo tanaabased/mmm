@@ -1,0 +1,44 @@
+schemaVersion: 1
+id: overnight-vwap
+instrument:
+  assetClass: future
+  symbol: ES
+  contract: ESZ26
+  tickSize: 0.25
+marketData:
+  provider: unresolved-futures-provider
+  feed: unresolved
+  intervalSeconds: 60
+  adjustment: raw
+  volumeUnit: contracts
+  priceBasis: bar-vwap
+strategy:
+  type: vwap-mean-reversion
+  parameters:
+    entrySigma: 2
+    exitSigma: 0.5
+session:
+  name: overnight-research
+  timezone: America/Chicago
+  calendar: fixture-overnight
+  calendarVersion: 2026-09-29
+  tradingDate: calendar-label
+  window:
+    start:
+      time: 18:00
+      dayOffset: -1
+    end:
+      time: 16:00
+      dayOffset: 0
+  vwapReset:
+    time: 18:00
+    dayOffset: -1
+  dstPolicy: reject-ambiguous-or-nonexistent
+warmup:
+  minPositiveVolumeBars: 2
+  scope: since-reset
+dataPolicy:
+  missing: unavailable
+  corrections: replay-retained-session
+  duplicates: ignore-identical
+  maxSessionBars: 1440
