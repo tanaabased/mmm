@@ -2,12 +2,14 @@
 
 Research date: **2026-09-29**. Status: **recommended for the next integration milestone; no adapters implemented or account access verified**.
 
+Direction update, **2026-10-02**: proceed with **equities first through Alpaca**, beginning with paper execution in later integration work. Futures provider selection, accounts, data subscriptions, and implementation are deferred until explicitly revisited. The futures comparison below is retained as research reference, not an active delivery commitment or an equities blocker.
+
 This decision addresses [#7](https://github.com/tanaabased/mmm/issues/7). The foundation remains credential-free. [#2](https://github.com/tanaabased/mmm/issues/2) owns the package/runtime baseline, [#8](https://github.com/tanaabased/mmm/issues/8) owns analytics and strategy configuration, and [#9](https://github.com/tanaabased/mmm/issues/9) is pirog's manual Alpaca/TypeSafe access task. No baseline PR or repository-local documentation convention was available when this document was prepared.
 
 ## Decision
 
 - **Equities:** use the official `@alpacahq/alpaca-trade-api` SDK through separate MMM market-data and execution adapters. Use consolidated SIP for market-wide VWAP evaluation when entitled; IEX is a clearly labelled development mode. Start with paper execution.
-- **Futures:** make Tradovate the first integration candidate for both data and execution, conditional on the access and data-quality gates below. Keep IBKR as the fallback. Defer Databento unless broker history or data fidelity proves inadequate; it supplies data, not the execution account.
+- **Futures:** deferred. No futures provider is selected for implementation. Retain the original Tradovate/IBKR/Databento comparison for a later decision; recheck the shortlist, access requirements, and data quality if futures work resumes.
 - **Jev:** use the official `@typesafe-ai/sdk` behind an optional decision interface, initially disabled. Pin the model and evaluate whether it adds anything to a deterministic strategy. A model does not earn a place in the order path by returning a confident number.
 - **Ownership:** the server owns connections, recovery, feature calculation, risk checks, and order reconciliation. CLI/TUI clients consume the shared application API. Provider SDK types do not become application contracts.
 
@@ -94,7 +96,7 @@ The table separates product coverage from data access and execution. “Document
 
 Tradovate partner documentation corroborates endpoints only; it does not grant a retail account partner privileges. IBKR's newer introduction describes OAuth 2.0 while the individual-access guide describes different onboarding paths. Resolve the applicable flow, approvals, reauthentication and paper behavior with the operator/provider before promising unattended operation. [IBKR introduction][ibkr-intro]
 
-**Recommendation:** attempt a bounded Tradovate data-and-paper qualification in a later milestone after pirog accepts its account/data requirements. If access or required candle fidelity fails, evaluate IBKR against the same fixtures. Add Databento only if a documented broker-data limitation justifies a separate feed; then validate exact contract mapping and timestamps across vendors. This document does not authorize a futures account or spending under #9.
+**Deferred research recommendation:** the original comparison favored a bounded Tradovate data-and-paper qualification, with IBKR as fallback and Databento only for a demonstrated broker-data limitation. The 2026-10-02 equities-first decision postpones that qualification and any provider commitment. Reopen the comparison before acting; no futures account, subscription, or implementation is part of #9 or the next equities integration.
 
 ### Instrument and calendar facts for #8
 
@@ -179,6 +181,8 @@ This is a later experiment specification, not a claim that evaluation has run.
 ## Blockers and handoff
 
 These block particular integrations or conclusions, **not completion of this research decision**.
+
+F1-F3 are dormant research questions while futures are deferred; they require no action for the foundation or equities integration. Contract-roll and futures-session fixtures remain reference coverage, not a commitment to ship futures support.
 
 | ID | Unresolved fact / risk | Owner and next evidence | Blocks |
 | --- | --- | --- | --- |
