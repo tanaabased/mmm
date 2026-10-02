@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "id": "asia-reversal",
+  "instrument": {
+    "assetClass": "equity",
+    "symbol": "SYNTH-ASIA",
+    "tickSize": 0.01
+  },
+  "marketData": {
+    "provider": "fixture",
+    "feed": "synthetic",
+    "intervalSeconds": 60,
+    "adjustment": "raw",
+    "volumeUnit": "shares",
+    "priceBasis": "bar-vwap"
+  },
+  "strategy": {
+    "type": "v-reversal",
+    "parameters": {
+      "declineFraction": 0.04,
+      "recoveryFraction": 0.5,
+      "windowMinutes": 4
+    }
+  },
+  "session": {
+    "name": "asia-morning",
+    "timezone": "Asia/Tokyo",
+    "calendar": "fixture-asia",
+    "calendarVersion": "2026-09-29",
+    "tradingDate": "calendar-label",
+    "window": {
+      "start": {
+        "time": "09:00",
+        "dayOffset": 0
+      },
+      "end": {
+        "time": "11:00",
+        "dayOffset": 0
+      }
+    },
+    "vwapReset": {
+      "time": "09:00",
+      "dayOffset": 0
+    },
+    "dstPolicy": "reject-ambiguous-or-nonexistent"
+  },
+  "warmup": {
+    "minPositiveVolumeBars": 2,
+    "scope": "since-reset"
+  },
+  "dataPolicy": {
+    "missing": "unavailable",
+    "corrections": "replay-retained-session",
+    "duplicates": "ignore-identical",
+    "maxSessionBars": 1440
+  },
+  "decision": {
+    "provider": "jev",
+    "model": "jev-1.13",
+    "criterion": "Given only the supplied source-grounded context and computed setup, is the stated event context supportive? Abstain when context is absent or conflicting.",
+    "outcomes": ["allow", "abstain"],
+    "unavailable": "abstain"
+  }
+}

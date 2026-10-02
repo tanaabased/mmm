@@ -1,0 +1,2 @@
+# The legacy repository-wide Python rules ignore every lib/ directory.
+!lib/

@@ -1,0 +1,43 @@
+schemaVersion: 1
+id: europe-opening-range
+instrument:
+  assetClass: equity
+  symbol: SYNTH-EU
+  tickSize: 0.01
+marketData:
+  provider: fixture
+  feed: synthetic
+  intervalSeconds: 60
+  adjustment: raw
+  volumeUnit: shares
+  priceBasis: bar-vwap
+strategy:
+  type: opening-range-breakout
+  parameters:
+    rangeMinutes: 15
+    breakoutBufferTicks: 1
+session:
+  name: europe-morning
+  timezone: Europe/London
+  calendar: fixture-europe
+  calendarVersion: 2026-09-29
+  tradingDate: calendar-label
+  window:
+    start:
+      time: 08:00
+      dayOffset: 0
+    end:
+      time: 10:00
+      dayOffset: 0
+  vwapReset:
+    time: 08:00
+    dayOffset: 0
+  dstPolicy: reject-ambiguous-or-nonexistent
+warmup:
+  minPositiveVolumeBars: 2
+  scope: since-reset
+dataPolicy:
+  missing: unavailable
+  corrections: replay-retained-session
+  duplicates: ignore-identical
+  maxSessionBars: 1440
